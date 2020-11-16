@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 from api.v1.views import app_views
-from flask import Flask, render_template, make_response, jsonify
+from flask import Flask, render_template, make_response
 from flask_cors import CORS
-import requests, json
 from config import DevelopmentConfig
 
 # Initializations

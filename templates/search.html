@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+{% block title %}{{ title }} {% endblock title %}
+{% block body %}
+    <div class="container">
+        {% from "macros.html" import render_field %}
+        <form action="{{ url_for('app_views.search') }}" style="display: inline-grid;" method="POST">
+            <h3>Search oportunities</h3>
+            {{ render_field(form.username, class='form-control') }}
+            {{ render_field(form.document, class='form-control') }}
+            {{ render_field(form.address, class='form-control') }}
+            <button type="submit">Create</button>
+        </form>
+    </div>
+{% endblock %}

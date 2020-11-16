@@ -1,24 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-</head>
-<body>
-    <div class="container" style="al">
+{% extends "template.html" %}
+{% block title %}{{ title }} {% endblock title %}
+{% block body %}
+    <div class="container">
+    <h1>CVTorre</h1>
+        <p>Trying to solve one problem that is present here in Colombia, and is have a professional curriculum vitae (CV), I have designed this app to create a CV on html format, just typing a few personal information and your genome from www.torre.co</p>
+        <a href="/api/v1/creation">Create CV</a>
+        <p>And if you dont know where you can use this CV, search for the best option:</p>
         {% from "macros.html" import render_field %}
-        <form action="{{ url_for('app_views.index') }}" style="display: inline-grid;" method="POST">
-            <h3>Search user by username</h3>
-            {{ render_field(form.username, class='form-control') }}
-            {{ render_field(form.document, class='form-control') }}
-            {{ render_field(form.address, class='form-control') }}
-            {{ render_field(form.birth, class='form-control') }}
-            {{ render_field(form.nation, class='form-control') }}
-            {{ render_field(form.phone, class='form-control') }}
-            {{ render_field(form.email, class='form-control') }}
-            <button type="submit">Create</button>
-        </form>        
+        <form action="{{ url_for('app_views.search') }}" style="display: inline-grid;" method="POST">
+            <h3>Select options to search:</h3>
+            {{ render_field(form.offset, class='form-control', placeholder='Type a number > 0') }}
+            {{ render_field(form.size, class='form-control', placeholder='How many opportunities do you want to see?') }}
+            {{ render_field(form.aggregate, class='form-control', placeholder='Write "True" or "False"') }}
+            <button type="submit">Search</button>
+        </form>
     </div>
-</body>
-</html>
+{% endblock %}

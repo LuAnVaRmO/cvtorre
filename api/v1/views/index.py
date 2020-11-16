@@ -3,6 +3,8 @@ from api.v1.views import app_views
 from flask import url_for, jsonify, request, make_response, render_template, redirect
 import requests
 import forms
+import http.client
+import mimetypes
 
 
 @app_views.route('/status', methods=['GET'])
@@ -11,9 +13,15 @@ def status():
     return jsonify({"status": "OK"})
 
 
-@app_views.route('/', methods=['GET', 'POST'])
+@app_views.route('/', methods=['GET'])
 def index():
-    """ Initial page """
+    searching = forms.OportunityForm(request.form)
+    return render_template('index.html', form=searching)
+
+
+@app_views.route('/creation', methods=['GET', 'POST'])
+def creat():
+    """ Creation page """
     creation = forms.CreationForm(request.form)
     if request.method == 'POST' and creation.validate():
         name = creation.username.data
@@ -34,11 +42,12 @@ def index():
         data = str(personaldata)
         return redirect(url_for('app_views.generate_url', name=name, data=data))
     else:  # GET method
-        return render_template('index.html', form=creation)
+        return render_template('create.html', form=creation)
 
 
 @app_views.route('/cv/<string:name>/<string:data>', methods=['GET'])
 def generate_url(name, data):
+    # data to use here
     data = data.replace("%25", " ")
     data = data.replace("%28", "/")
     data = data.replace("[", "")
@@ -107,3 +116,29 @@ def generate_url(name, data):
                            skillsdata=skillsdata,
                            socialdata=socialdata,
                            picture=picture)
+
+
+@app_views.route('/search', methods=['GET', 'POST'])
+def search():
+    searching = forms.OportunityForm(request.form)
+    if request.method == 'POST':
+        pasconn = http.client.HTTPSConnection("search.torre.co")
+        payload = ''
+        headers = {}
+        offset = searching.offset.data
+        size = searching.size.data
+        aggregate = searching.aggregate.data
+        pasconn.request("POST",
+                        "/opportunities/_search/?offset={}&size={}&aggregate={}".format(offset, size, aggregate),
+                        payload, headers)
+        res = pasconn.getresponse()
+        data = res.read()
+        print(data)
+        return redirect(url_for('app_views.result', offset=offset, size=size, aggregate=aggregate))
+    else:
+        return render_template('index.html', form=searching)
+
+
+@app_views.route('/result')
+def result():
+    return render_template('result.html')

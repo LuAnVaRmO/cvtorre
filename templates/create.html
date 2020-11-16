@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+{% block title %}{{ title }} {% endblock title %}
+{% block body %}
+    <div class="container">
+        <p>We need some personal information to complete the CV. Please fill the fields</p>
+        {% from "macros.html" import render_field %}
+        <form action="{{ url_for('app_views.creat') }}" style="display: inline-grid;" method="POST">
+            <h3>Create Curriculum Vitae with Torre Genome</h3>
+            {{ render_field(form.username, class='form-control', placeholder='Torre\'s nickname') }}
+            {{ render_field(form.document, class='form-control', placeholder='Please just digits without spaces') }}
+            {{ render_field(form.address, class='form-control', placeholder='Home address') }}
+            {{ render_field(form.birth, class='form-control',  placeholder='mm/dd//yyyy') }}
+            {{ render_field(form.nation, class='form-control',  placeholder='Colombian') }}
+            {{ render_field(form.phone, class='form-control',  placeholder='+57##########') }}
+            {{ render_field(form.email, class='form-control',  placeholder='Type a valid email') }}
+            <button type="submit">Create</button>
+        </form>
+    </div>
+{% endblock %}
