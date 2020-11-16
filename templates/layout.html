@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+    <title>CV {{ name }}</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Lato', sans-serif;
+    }
+
+    .flex-container {
+        width: 512px;
+        display: flex;
+        text-align: justify;
+        border: 1px solid black;
+    }
+
+    .flex-item-main {
+
+        background-color: whitesmoke;
+        padding: 15px;
+        flex: 70%;
+        color: black;
+    }
+
+    .flex-item-sidebar {
+        background-color: #113147;
+        flex: 30%;
+        color: white;
+        padding: 15px;
+    }
+    p {
+        font-size: 10px;
+    }
+    i {
+        font-size: 8px;
+    }
+    hr {
+        margin: -10px;
+    }
+
+    h1 {
+        text-align: left;
+        font-size: 20px;
+    }
+    h2 {
+        font-size: 14px;
+    }
+    h3 {
+        font-size: 12px;
+        margin-bottom: 0px;
+    }
+    h5 {
+        font-size: 8px;
+        margin: 0px;
+    }
+
+    .flex-item-main p {
+        margin: 4px 0px;
+    }
+
+    .flex-item-sidebar p {
+        font-size: 10px;
+    }
+
+    th {
+        width: 75px;
+    }
+
+    .box-text {
+        width: 120%;
+        padding: 10px 0;
+        background-color: #010D15;
+        border-top: inset;
+        position: relative;
+        left: -15px;
+    }
+
+    .box-text p {
+        padding-left: 10px;
+        margin: 0px;
+        font-weight: 400;
+        font-size: 11px;
+    }
+    b {
+        font-size: 10px;
+    }
+    .firma {
+        margin-top: 50px;
+    }
+
+    .img-container {
+        position: relative;
+        width: 100%;
+    }
+
+    img {
+        position: absolute;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+    }
+    .maindata {
+        margin-top: 150px;
+    }
+</style>
+
+<body>
+    <div class="flex-container">
+        <div class="flex-item-main">
+            <div class="img-container">
+                <img src="{{ picture }}" width="100px" height="130px" class="center"
+                    alt="Profile-picture">
+            </div>
+            <div class="maindata">
+                <hr>
+                <h2>About me</h2>
+                <hr>
+                <p style="margin-top: 15px;">{{ summary }}
+                </p>
+                <br>
+                <table>
+                    {% for dat in jobdata %}
+                    <tr>
+                        <th colspan="2">
+                            <h5>{{ dat.fromYear}}/{{ dat.fromMonth}}</h5>
+                            <h5>{{ dat.toYear}}/{{ dat.toMonth}}</h5>
+                        </th>
+
+                        <td colspan="4">
+                            <h3>{{ dat.name }}</h3>
+                            <p><i>{{ orgs[loop.index0] }}</i></p>
+                            {% for resp in dat.responsibilities %}
+                            <p>{{ resp }}</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <br>
+                <table>
+                    <tr>
+                        <th colspan="6">
+                            <hr>
+                            <h2>Education</h2>
+                            <hr>
+                        </th>
+                    </tr>
+                    {%for dat in educationdata %}
+                    <tr>
+                        <th colspan="2">
+                            <h5>{{ dat.fromYear}}/{{ dat.fromMonth}}</h5>
+                            <h5>{{ dat.toYear}}/{{ dat.toMonth}}</h5>
+                        </th>
+
+                        <td colspan="4">
+                            <h3>{{ dat.name}}</h3>
+                            <p><i>{{ schools[loop.index0] }}</i></p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="firma">
+                    <p>__________________________________</p>
+                    <p><b>{{ name }}</b></p>
+                    <p>{{ document }}</p>
+                    <p>{{ location }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR-->
+        <div class="flex-item-sidebar">
+            <h1>{{ name }}</h1>
+            <p style="text-align: center;">{{ proheadline }}</p>
+            <div class="box-text">
+                <p style="margin: 0px;">Contact</p>
+            </div>
+            <p><b>Address</b></p>
+            <p>{{ personaldata.0 }}</p>
+            <p><b>Birthday</b></p>
+            <p>{{ personaldata.1 }}</p>
+            <p><b>Nationality</b></p>
+            <p>{{ personaldata.2 }}</p>
+            <p><b>Phone</b></p>
+            <p> {{ personaldata.3 }}</p>
+            <p><b>Email</b></p>
+            <p>{{ personaldata.4 }}</p>
+            {% for dat in socialdata %}
+            <p><b>{{ dat.name}}</b></p>
+            <p>{{ dat.address}}</p>
+            {% endfor %}
+            <div class="box-text">
+                <p>Skills</p>
+            </div>
+            {% for dat in skillsdata %}
+            <p>{{ dat }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
